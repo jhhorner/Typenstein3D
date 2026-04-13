@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    // Formatting
+    "esbenp.prettier-vscode",
+    // Spell checking
+    "streetsidesoftware.code-spell-checker",
+    // Test runner UI
+    "vitest.explorer",
+    // Linting (for when ESLint is added)
+    "dbaeumer.vscode-eslint"
+  ]
+}

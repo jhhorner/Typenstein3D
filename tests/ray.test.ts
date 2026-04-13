@@ -1,0 +1,148 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { GameManager } from '../src/game_manager.js';
+import { Ray } from '../src/ray.js';
+import { MAP_TILE_SIZE } from '../src/constants.js';
+import { theme } from '../src/theme.js';
+import { p5Mock } from './helpers/p5Mock.js';
+
+beforeEach(() => {
+  (GameManager as any)._instance = new GameManager();
+});
+
+describe('Ray direction flags', () => {
+  it('π/4 (down-right): isFacingDown and isFacingRight', () => {
+    const ray = new Ray(Math.PI / 4);
+
+    expect(ray.isFacingDown).toBe(true);
+    expect(ray.isFacingRight).toBe(true);
+    expect(ray.isFacingUp).toBe(false);
+    expect(ray.isFacingLeft).toBe(false);
+  });
+
+  it('3π/4 (down-left): isFacingDown and isFacingLeft', () => {
+    const ray = new Ray((3 * Math.PI) / 4);
+
+    expect(ray.isFacingDown).toBe(true);
+    expect(ray.isFacingLeft).toBe(true);
+  });
+
+  it('5π/4 (up-left): isFacingUp and isFacingLeft', () => {
+    const ray = new Ray((5 * Math.PI) / 4);
+
+    expect(ray.isFacingUp).toBe(true);
+    expect(ray.isFacingLeft).toBe(true);
+  });
+
+  it('7π/4 (up-right): isFacingUp and isFacingRight', () => {
+    const ray = new Ray((7 * Math.PI) / 4);
+
+    expect(ray.isFacingUp).toBe(true);
+    expect(ray.isFacingRight).toBe(true);
+  });
+});
+
+describe('Ray.reset', () => {
+  it('updates direction flags after reset', () => {
+    const ray = new Ray(Math.PI / 4); // down-right
+
+    ray.angle = (5 * Math.PI) / 4; // now up-left
+
+    expect(ray.isFacingUp).toBe(true);
+    expect(ray.isFacingLeft).toBe(true);
+  });
+
+  it('normalizes negative angles to [0, 2π)', () => {
+    const ray = new Ray(0);
+
+    ray.angle = -Math.PI / 2; // equivalent to 3π/2 → up, horizontal boundary is Left
+
+    expect(ray.isFacingUp).toBe(true);
+    expect(ray.isFacingLeft).toBe(true);
+  });
+
+  it('normalizes angles beyond 2π', () => {
+    const ray = new Ray(0);
+
+    ray.angle = 3 * Math.PI; // equivalent to π → up (π is not strictly < π), Left
+
+    expect(ray.isFacingUp).toBe(true);
+    expect(ray.isFacingLeft).toBe(true);
+  });
+});
+
+describe('Ray.cast (step sign correction branches)', () => {
+  // angle 3π/4 (down-left): tan is negative → triggers isFacingDown && yStep < 0 on line 188
+  it('casts correctly at 3π/4 (down-left)', () => {
+    const ray = new Ray((3 * Math.PI) / 4);
+
+    ray.cast();
+
+    expect(ray.collisionPoint.x).toBeGreaterThanOrEqual(0);
+    expect(ray.collisionPoint.y).toBeGreaterThanOrEqual(0);
+  });
+
+  // angle 7π/4 (up-right): tan is negative → triggers isFacingRight && xStep < 0 on line 155
+  it('casts correctly at 7π/4 (up-right)', () => {
+    const ray = new Ray((7 * Math.PI) / 4);
+
+    ray.cast();
+
+    expect(ray.collisionPoint.x).toBeGreaterThanOrEqual(0);
+    expect(ray.collisionPoint.y).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('Ray.cast', () => {
+  it('sets collisionPoint to a non-origin wall for a ray cast into the map', () => {
+    // Player starts at MAP center; cast a ray facing right (angle = 0)
+    // It should hit the right wall of the map
+    const player = GameManager.instance.player;
+    player.rotationAngle = 0; // facing right
+
+    const ray = new Ray(0);
+    ray.cast();
+
+    expect(ray.collisionPoint.x).toBeGreaterThan(0);
+    // collisionPoint should be on a tile boundary (multiple of MAP_TILE_SIZE)
+    expect(ray.collisionPoint.x % MAP_TILE_SIZE).toBeCloseTo(0, 0);
+  });
+
+  it('sets collisionPoint to a non-origin wall when facing up', () => {
+    const ray = new Ray(2 * Math.PI); // facing up
+
+    ray.cast();
+
+    expect(ray.collisionPoint.y).toBeGreaterThanOrEqual(0);
+    expect(ray.distance).toBeGreaterThan(0);
+  });
+
+  it('collisionPoint is mutated in-place (same object reference)', () => {
+    const ray = new Ray(0);
+    const originalRef = ray.collisionPoint;
+
+    ray.cast();
+
+    expect(ray.collisionPoint).toBe(originalRef);
+  });
+});
+
+describe('Ray.render', () => {
+  it('renders without throwing', () => {
+    const ray = new Ray(0);
+
+    ray.cast();
+
+    expect(() => ray.render(p5Mock)).not.toThrow();
+  });
+
+  it('uses theme.map.rays color (with alpha) for stroke', () => {
+    const strokeSpy = vi.spyOn(p5Mock, 'stroke');
+    const ray = new Ray(0);
+
+    ray.cast();
+    ray.render(p5Mock);
+
+    expect(strokeSpy).toHaveBeenCalledWith(`${theme.map.rays}50`);
+    strokeSpy.mockRestore();
+  });
+});
