@@ -41,7 +41,7 @@ export class RayCaster extends DefaultGameObject {
   /**
    * Resets and casts rays each frame.
    */
-  update() {
+  update(_deltaTime: number) {
     const playerAngle = GameManager.instance.player.rotationAngle;
     let rayAngle = playerAngle - FOV_ANGLE / 2;
 

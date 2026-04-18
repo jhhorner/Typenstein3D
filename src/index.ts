@@ -1,7 +1,7 @@
 import type p5 from 'p5';
 import { GameManager } from './game_manager.js';
 import { debugOptions } from './debug_options.js';
-import { MAP_SCALE, WINDOW_WIDTH, WINDOW_HEIGHT } from './constants.js';
+import { MAP_SCALE, WINDOW_WIDTH, WINDOW_HEIGHT, SECOND_IN_MILLISECONDS } from './constants.js';
 import { DefaultImageLoader } from './image_loader.js';
 
 /**
@@ -11,9 +11,9 @@ import { DefaultImageLoader } from './image_loader.js';
 new p5((p: p5) => {
   const manager = GameManager.instance;
 
-  function update() {
-    manager.mapObjects.forEach((o) => o.update());
-    manager.sceneObjects.forEach((o) => o.update());
+  function update(deltaTime: number) {
+    manager.mapObjects.forEach((o) => o.update(deltaTime));
+    manager.sceneObjects.forEach((o) => o.update(deltaTime));
   }
 
   function drawMap(): void {
@@ -35,10 +35,11 @@ new p5((p: p5) => {
 
   p.setup = () => {
     p.createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    p.frameRate(60);
   };
 
   p.draw = () => {
-    update();
+    update(p.deltaTime / SECOND_IN_MILLISECONDS);
 
     p.clear();
     drawScene();

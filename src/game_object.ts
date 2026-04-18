@@ -5,7 +5,7 @@ import type p5 from 'p5';
  */
 export interface GameObject {
   /** Advances the object's state to be rendered in the next frame. */
-  update(): void;
+  update(deltaTime: number): void;
 
   /**
    * Renders the object on the canvas.
@@ -19,5 +19,5 @@ export interface GameObject {
  */
 export abstract class DefaultGameObject implements GameObject {
   abstract render(p: p5): void;
-  update() {}
+  update(_deltaTime: number) {}
 }

@@ -20,3 +20,6 @@ export const WINDOW_WIDTH = MAP_COLUMN_COUNT * MAP_TILE_SIZE;
 
 /** Canvas height in pixels. */
 export const WINDOW_HEIGHT = MAP_ROW_COUNT * MAP_TILE_SIZE;
+
+/** Number of milliseconds in a minute */
+export const SECOND_IN_MILLISECONDS = 1000;

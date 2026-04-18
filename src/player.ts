@@ -47,20 +47,20 @@ export class Player extends DefaultGameObject {
     this.position = { x: WINDOW_WIDTH / 2, y: WINDOW_HEIGHT / 2 };
     this.turnDirection = 0;
     this.walkDirection = 0;
-    this.movementSpeed = 2.0;
+    this.movementSpeed = 120;
     this.rotationAngle = Math.PI / 2;
-    this.rotationSpeed = degreesToRadians(2);
+    this.rotationSpeed = degreesToRadians(120);
   }
 
   /**
    * Updates player state per-frame.
    */
-  update() {
+  update(deltaTime: number) {
     const directionX = Math.cos(this.rotationAngle);
     const directionY = Math.sin(this.rotationAngle);
-    const moveDirection = this.walkDirection * this.movementSpeed;
+    const moveDirection = this.walkDirection * this.movementSpeed * deltaTime;
 
-    this.rotationAngle += this.turnDirection * this.rotationSpeed;
+    this.rotationAngle += this.turnDirection * this.rotationSpeed * deltaTime;
     this._nextPosition.x = this.position.x + moveDirection * directionX;
     this._nextPosition.y = this.position.y + moveDirection * directionY;
 
@@ -117,15 +117,7 @@ export class Player extends DefaultGameObject {
    * @param p - p5 instance
    */
   handleKeyReleased(p: p5): void {
-    switch (p.keyCode) {
-      case p.UP_ARROW:
-      case p.DOWN_ARROW:
-        this.walkDirection = 0;
-        break;
-      case p.LEFT_ARROW:
-      case p.RIGHT_ARROW:
-        this.turnDirection = 0;
-        break;
-    }
+    this.walkDirection = p.keyIsDown(p.UP_ARROW) ? 1 : p.keyIsDown(p.DOWN_ARROW) ? -1 : 0;
+    this.turnDirection = p.keyIsDown(p.LEFT_ARROW) ? -1 : p.keyIsDown(p.RIGHT_ARROW) ? 1 : 0;
   }
 }
