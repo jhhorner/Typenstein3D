@@ -109,20 +109,7 @@ window.debugOptions.render.mapScale = 2;
 typedoom/
 ├── src/
 │   ├── index.ts            Entry point — initializes the p5 canvas and drives the game loop
-│   ├── game_manager.ts     Singleton coordinator — owns the map, player, and ray caster
-│   ├── game_map.ts         Tile-based map — grid layout, wall/floor data, collision queries
-│   ├── maps.ts             Collection of furnished maps
-│   ├── player.ts           Player state — position, rotation, movement speed, input handling
-│   ├── ray.ts              Ray type — intercept data produced by the DDA ray caster
-│   ├── ray_caster.ts       DDA ray casting engine — computes wall intersections each frame
-│   ├── ray_projector.ts    Wall projection renderer — draws 3D wall columns from ray results
-│   ├── sky_renderer.ts     Sky renderer — fills the upper half of the viewport
-│   ├── floor_renderer.ts   Floor renderer — fills the lower half of the viewport
-│   ├── constants.ts        Game constants — tile size, map dimensions, FOV, window dimensions
-│   ├── math.ts             Math utilities — Vector type, angle conversion, Euclidean distance
-│   ├── game_object.ts      Base interface and abstract class for all game loop participants
-│   ├── theme.ts            Map color scheme — exposed on window.theme for live editing
-│   ├── debug_options.ts    Runtime debug flags — exposed on window.debugOptions for live toggling
+│   ├── *.ts                Game logic and engine files
 │   └── vendor/             Bundled third-party libraries (p5.js)
 ├── tests/
 │   ├── helpers/
