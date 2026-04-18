@@ -5,12 +5,12 @@ import { p5Mock } from './helpers/p5Mock.js';
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../src/constants.js';
 
 describe('SkyRenderer.render', () => {
-  it('does not throw', () => {
+  it('should not throw', () => {
     const renderer = new SkyRenderer();
     expect(() => renderer.render(p5Mock)).not.toThrow();
   });
 
-  it('fills with the theme sky color', () => {
+  it('should fill with the theme sky color', () => {
     const renderer = new SkyRenderer();
     const fillSpy = vi.spyOn(p5Mock, 'fill');
 
@@ -20,7 +20,7 @@ describe('SkyRenderer.render', () => {
     fillSpy.mockRestore();
   });
 
-  it('calls noStroke', () => {
+  it('should call noStroke', () => {
     const renderer = new SkyRenderer();
     const noStrokeSpy = vi.spyOn(p5Mock, 'noStroke');
 
@@ -30,7 +30,7 @@ describe('SkyRenderer.render', () => {
     noStrokeSpy.mockRestore();
   });
 
-  it('draws a rect covering the top portion of the window', () => {
+  it('should draw a rect covering the top portion of the window', () => {
     const renderer = new SkyRenderer();
     const rectSpy = vi.spyOn(p5Mock, 'rect');
 
@@ -40,7 +40,7 @@ describe('SkyRenderer.render', () => {
     rectSpy.mockRestore();
   });
 
-  it('reflects theme.sky changes at render time', () => {
+  it('should reflect theme.sky changes at render time', () => {
     const original = theme.sky;
     theme.sky = '#abcdef';
 

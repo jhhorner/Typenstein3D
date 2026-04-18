@@ -11,13 +11,13 @@ class ConcreteGameObject extends DefaultGameObject {
 }
 
 describe('DefaultGameObject', () => {
-  it('update() is a no-op and does not throw', () => {
+  it('should be a no-op and not throw on update()', () => {
     const obj = new ConcreteGameObject();
 
     expect(() => obj.update()).not.toThrow();
   });
 
-  it('render() delegates to the subclass implementation', () => {
+  it('should delegate render() to the subclass implementation', () => {
     const obj = new ConcreteGameObject();
 
     obj.render(p5Mock);

@@ -2,27 +2,27 @@ import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } 
 import { theme } from '../src/theme.js';
 
 describe('theme defaults', () => {
-  it('has expected tileBorder color', () => {
+  it('should have expected tileBorder color', () => {
     expect(theme.map.tileBorder).toBe('#000');
   });
 
-  it('has expected floor color', () => {
+  it('should have expected floor color', () => {
     expect(theme.map.floor).toBe('#fff');
   });
 
-  it('has expected wall color', () => {
+  it('should have expected wall color', () => {
     expect(theme.map.wall).toBe('#000');
   });
 
-  it('has expected player color', () => {
+  it('should have expected player color', () => {
     expect(theme.map.player).toBe('#ff0000');
   });
 
-  it('has expected rays color', () => {
+  it('should have expected rays color', () => {
     expect(theme.map.rays).toBe('#ff0000');
   });
 
-  it('has expected rotationAngle color', () => {
+  it('should have expected rotationAngle color', () => {
     expect(theme.map.rotationAngle).toBe('#0000ff');
   });
 });
@@ -36,12 +36,12 @@ describe('window.theme', () => {
     delete (globalThis as any).window;
   });
 
-  it('is assigned to window when window is defined', () => {
+  it('should be assigned to window when window is defined', () => {
     (globalThis as any).window.theme = theme;
     expect((globalThis as any).window.theme).toBe(theme);
   });
 
-  it('mutations via window.theme are reflected in the imported theme', () => {
+  it('should reflect mutations via window.theme in the imported theme', () => {
     (globalThis as any).window = { theme };
     const original = theme.map.player;
     (globalThis as any).window.theme.map.player = '#00ff00';
@@ -60,7 +60,7 @@ describe('window.theme module-level assignment', () => {
     delete (globalThis as any).window;
   });
 
-  it('assigns theme to window when window is defined at module load', async () => {
+  it('should assign theme to window when window is defined at module load', async () => {
     const { theme: freshTheme } = await import('../src/theme.js');
 
     expect((globalThis as any).window.theme).toBe(freshTheme);

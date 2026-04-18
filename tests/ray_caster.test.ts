@@ -9,12 +9,12 @@ beforeEach(() => {
 });
 
 describe('RayCaster', () => {
-  it('initializes rays with length RAY_COUNT', () => {
+  it('should initialize rays with length RAY_COUNT', () => {
     const caster = new RayCaster();
     expect(caster.rays).toHaveLength(RAY_COUNT);
   });
 
-  it('update sets a non-origin collision point on rays[0]', () => {
+  it('should set a non-origin collision point on rays[0] after update', () => {
     const caster = new RayCaster();
 
     caster.update();
@@ -23,7 +23,7 @@ describe('RayCaster', () => {
     expect(cp.x !== 0 || cp.y !== 0).toBe(true);
   });
 
-  it('render does not throw', () => {
+  it('should not throw on render', () => {
     const caster = new RayCaster();
 
     caster.update();
@@ -37,7 +37,7 @@ describe('RayCaster.render', () => {
     debugOptions.render.singleRay = false;
   });
 
-  it('renders all rays when singleRay is false', () => {
+  it('should render all rays when singleRay is false', () => {
     const caster = new RayCaster();
     caster.update();
 
@@ -51,7 +51,7 @@ describe('RayCaster.render', () => {
     renderSpies.forEach((s) => s.mockRestore());
   });
 
-  it('renders only rays[0] when singleRay is true', () => {
+  it('should render only rays[0] when singleRay is true', () => {
     const caster = new RayCaster();
     caster.update();
 

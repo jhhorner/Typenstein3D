@@ -5,12 +5,12 @@ import { p5Mock } from './helpers/p5Mock.js';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../src/constants.js';
 
 describe('FloorRenderer.render', () => {
-  it('does not throw', () => {
+  it('should not throw', () => {
     const renderer = new FloorRenderer();
     expect(() => renderer.render(p5Mock)).not.toThrow();
   });
 
-  it('fills with the theme floor color', () => {
+  it('should fill with the theme floor color', () => {
     const renderer = new FloorRenderer();
     const fillSpy = vi.spyOn(p5Mock, 'fill');
 
@@ -20,7 +20,7 @@ describe('FloorRenderer.render', () => {
     fillSpy.mockRestore();
   });
 
-  it('calls noStroke', () => {
+  it('should call noStroke', () => {
     const renderer = new FloorRenderer();
     const noStrokeSpy = vi.spyOn(p5Mock, 'noStroke');
 
@@ -30,7 +30,7 @@ describe('FloorRenderer.render', () => {
     noStrokeSpy.mockRestore();
   });
 
-  it('draws a rect covering the bottom portion of the window', () => {
+  it('should draw a rect covering the bottom portion of the window', () => {
     const renderer = new FloorRenderer();
     const rectSpy = vi.spyOn(p5Mock, 'rect');
 
@@ -40,7 +40,7 @@ describe('FloorRenderer.render', () => {
     rectSpy.mockRestore();
   });
 
-  it('reflects theme.floor changes at render time', () => {
+  it('should reflect theme.floor changes at render time', () => {
     const original = theme.floor;
     theme.floor = '#fedcba';
 

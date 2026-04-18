@@ -22,14 +22,14 @@ beforeEach(() => {
 });
 
 describe('Player initial state', () => {
-  it('starts at the center of the map', () => {
+  it('should start at the center of the map', () => {
     const player = GameManager.instance.player;
 
     expect(player.position.x).toBeCloseTo(WINDOW_WIDTH / 2);
     expect(player.position.y).toBeCloseTo(WINDOW_HEIGHT / 2);
   });
 
-  it('starts with zero walk and turn direction', () => {
+  it('should start with zero walk and turn direction', () => {
     const player = GameManager.instance.player;
 
     expect(player.walkDirection).toBe(0);
@@ -38,7 +38,7 @@ describe('Player initial state', () => {
 });
 
 describe('Player.handleKeyPressed', () => {
-  it('sets walkDirection to 1 on UP_ARROW', () => {
+  it('should set walkDirection to 1 on UP_ARROW', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(38));
@@ -46,7 +46,7 @@ describe('Player.handleKeyPressed', () => {
     expect(player.walkDirection).toBe(1);
   });
 
-  it('sets walkDirection to -1 on DOWN_ARROW', () => {
+  it('should set walkDirection to -1 on DOWN_ARROW', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(40));
@@ -54,7 +54,7 @@ describe('Player.handleKeyPressed', () => {
     expect(player.walkDirection).toBe(-1);
   });
 
-  it('sets turnDirection to -1 on LEFT_ARROW', () => {
+  it('should set turnDirection to -1 on LEFT_ARROW', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(37));
@@ -62,7 +62,7 @@ describe('Player.handleKeyPressed', () => {
     expect(player.turnDirection).toBe(-1);
   });
 
-  it('sets turnDirection to 1 on RIGHT_ARROW', () => {
+  it('should set turnDirection to 1 on RIGHT_ARROW', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(39));
@@ -70,7 +70,7 @@ describe('Player.handleKeyPressed', () => {
     expect(player.turnDirection).toBe(1);
   });
 
-  it('ignores unknown keys', () => {
+  it('should ignore unknown keys', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(65)); // 'A'
@@ -81,7 +81,7 @@ describe('Player.handleKeyPressed', () => {
 });
 
 describe('Player.handleKeyReleased', () => {
-  it('resets walkDirection on UP_ARROW release', () => {
+  it('should reset walkDirection on UP_ARROW release', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(38));
@@ -90,7 +90,7 @@ describe('Player.handleKeyReleased', () => {
     expect(player.walkDirection).toBe(0);
   });
 
-  it('resets walkDirection on DOWN_ARROW release', () => {
+  it('should reset walkDirection on DOWN_ARROW release', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(40));
@@ -99,7 +99,7 @@ describe('Player.handleKeyReleased', () => {
     expect(player.walkDirection).toBe(0);
   });
 
-  it('resets turnDirection on LEFT_ARROW release', () => {
+  it('should reset turnDirection on LEFT_ARROW release', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(37));
@@ -108,7 +108,7 @@ describe('Player.handleKeyReleased', () => {
     expect(player.turnDirection).toBe(0);
   });
 
-  it('resets turnDirection on RIGHT_ARROW release', () => {
+  it('should reset turnDirection on RIGHT_ARROW release', () => {
     const player = new Player();
 
     player.handleKeyPressed(keyStub(39));
@@ -119,7 +119,7 @@ describe('Player.handleKeyReleased', () => {
 });
 
 describe('Player.update', () => {
-  it('does not move when walkDirection is 0', () => {
+  it('should not move when walkDirection is 0', () => {
     const player = GameManager.instance.player;
     const startX = player.position.x;
     const startY = player.position.y;
@@ -130,7 +130,7 @@ describe('Player.update', () => {
     expect(player.position.y).toBeCloseTo(startY);
   });
 
-  it('advances position into open space', () => {
+  it('should advance position into open space', () => {
     const player = GameManager.instance.player;
     player.rotationAngle = 0; // facing right (+x)
     player.walkDirection = 1;
@@ -141,7 +141,7 @@ describe('Player.update', () => {
     expect(player.position.x).toBeGreaterThan(startX);
   });
 
-  it('does not move into a wall', () => {
+  it('should not move into a wall', () => {
     const player = GameManager.instance.player;
     // Place the player just inside the left wall and face left into it
     player.position.x = 4;
@@ -155,7 +155,7 @@ describe('Player.update', () => {
     expect(player.position.x).toBeCloseTo(startX);
   });
 
-  it('advances rotationAngle when turning', () => {
+  it('should advance rotationAngle when turning', () => {
     const player = GameManager.instance.player;
     const startAngle = player.rotationAngle;
     player.turnDirection = 1;
@@ -171,12 +171,12 @@ describe('Player.render', () => {
     debugOptions.render.rotationAngle = false;
   });
 
-  it('renders without throwing', () => {
+  it('should render without throwing', () => {
     const player = GameManager.instance.player;
     expect(() => player.render(p5Mock)).not.toThrow();
   });
 
-  it('does not draw rotation line when rotationAngle is false', () => {
+  it('should not draw rotation line when rotationAngle is false', () => {
     const lineSpy = vi.spyOn(p5Mock, 'line');
     const player = GameManager.instance.player;
 
@@ -187,7 +187,7 @@ describe('Player.render', () => {
     lineSpy.mockRestore();
   });
 
-  it('draws rotation line when rotationAngle is true', () => {
+  it('should draw rotation line when rotationAngle is true', () => {
     const lineSpy = vi.spyOn(p5Mock, 'line');
     const player = GameManager.instance.player;
 
@@ -198,7 +198,7 @@ describe('Player.render', () => {
     lineSpy.mockRestore();
   });
 
-  it('uses theme.map.player color for fill', () => {
+  it('should use theme.map.player color for fill', () => {
     const fillSpy = vi.spyOn(p5Mock, 'fill');
     const player = GameManager.instance.player;
 
@@ -208,7 +208,7 @@ describe('Player.render', () => {
     fillSpy.mockRestore();
   });
 
-  it('uses theme.map.rotationAngle color for stroke when rotationAngle debug is enabled', () => {
+  it('should use theme.map.rotationAngle color for stroke when rotationAngle debug is enabled', () => {
     const strokeSpy = vi.spyOn(p5Mock, 'stroke');
     const player = GameManager.instance.player;
 

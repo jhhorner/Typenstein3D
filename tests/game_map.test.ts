@@ -9,27 +9,27 @@ import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../src/constants.js';
 describe('GameMap.isWithinBounds', () => {
   const map = new GameMap();
 
-  it('returns true for the origin', () => {
+  it('should return true for the origin', () => {
     expect(map.isWithinBounds({ x: 0, y: 0 })).toBe(true);
   });
 
-  it('returns true for the far corner', () => {
+  it('should return true for the far corner', () => {
     expect(map.isWithinBounds({ x: WINDOW_WIDTH, y: WINDOW_HEIGHT })).toBe(true);
   });
 
-  it('returns false for negative x', () => {
+  it('should return false for negative x', () => {
     expect(map.isWithinBounds({ x: -1, y: 0 })).toBe(false);
   });
 
-  it('returns false for negative y', () => {
+  it('should return false for negative y', () => {
     expect(map.isWithinBounds({ x: 0, y: -1 })).toBe(false);
   });
 
-  it('returns false beyond WINDOW_WIDTH', () => {
+  it('should return false beyond WINDOW_WIDTH', () => {
     expect(map.isWithinBounds({ x: WINDOW_WIDTH + 1, y: 0 })).toBe(false);
   });
 
-  it('returns false beyond MAP_HEIGHT', () => {
+  it('should return false beyond MAP_HEIGHT', () => {
     expect(map.isWithinBounds({ x: 0, y: WINDOW_HEIGHT + 1 })).toBe(false);
   });
 });
@@ -37,27 +37,27 @@ describe('GameMap.isWithinBounds', () => {
 describe('GameMap.hasAttributeAt', () => {
   const map = new GameMap();
 
-  it('detects a wall tile at the top-left corner', () => {
+  it('should detect a wall tile at the top-left corner', () => {
     // Grid row 0, col 0 = 1 (wall)
     expect(map.hasAttributeAt({ x: 0, y: 0 }, TileAttribute.Wall)).toBe(true);
   });
 
-  it('detects a floor tile inside the map', () => {
+  it('should detect a floor tile inside the map', () => {
     // Grid row 1, col 1 = 0 (floor) → pixel (32, 32)
     expect(map.hasAttributeAt({ x: MAP_TILE_SIZE + 1, y: MAP_TILE_SIZE + 1 }, TileAttribute.Floor)).toBe(true);
   });
 
-  it('floor tile is not a wall', () => {
+  it('should not identify a floor tile as a wall', () => {
     expect(map.hasAttributeAt({ x: MAP_TILE_SIZE + 1, y: MAP_TILE_SIZE + 1 }, TileAttribute.Wall)).toBe(false);
   });
 
-  it('wall tile is not a floor', () => {
+  it('should not identify a wall tile as a floor', () => {
     expect(map.hasAttributeAt({ x: 0, y: 0 }, TileAttribute.Floor)).toBe(false);
   });
 });
 
 describe('GameMap grid invariants', () => {
-  it('has the expected number of rows and columns', () => {
+  it('should have the expected number of rows and columns', () => {
     const map = new GameMap();
     const grid = (map as any).grid as number[][];
     const expectedRows = WINDOW_HEIGHT / MAP_TILE_SIZE;
@@ -69,7 +69,7 @@ describe('GameMap grid invariants', () => {
     grid.forEach((row) => expect(row).toHaveLength(expectedCols));
   });
 
-  it('contains only valid tile values (0 or 1)', () => {
+  it('should contain only valid tile values (0 or 1)', () => {
     const map = new GameMap();
     const grid = (map as any).grid as number[][];
     const validValues = new Set([TileAttribute.Floor, TileAttribute.Wall]);
@@ -79,13 +79,13 @@ describe('GameMap grid invariants', () => {
 });
 
 describe('GameMap.render', () => {
-  it('renders without throwing', () => {
+  it('should render without throwing', () => {
     const map = new GameMap();
 
     expect(() => map.render(p5Mock)).not.toThrow();
   });
 
-  it('uses theme.map.tileBorder for stroke', () => {
+  it('should use theme.map.tileBorder for stroke', () => {
     const strokeSpy = vi.spyOn(p5Mock, 'stroke');
     const map = new GameMap();
 
@@ -95,7 +95,7 @@ describe('GameMap.render', () => {
     strokeSpy.mockRestore();
   });
 
-  it('uses theme.map.wall color for wall tiles', () => {
+  it('should use theme.map.wall color for wall tiles', () => {
     const fillSpy = vi.spyOn(p5Mock, 'fill');
     const map = new GameMap();
 
@@ -105,7 +105,7 @@ describe('GameMap.render', () => {
     fillSpy.mockRestore();
   });
 
-  it('uses theme.map.floor color for floor tiles', () => {
+  it('should use theme.map.floor color for floor tiles', () => {
     const fillSpy = vi.spyOn(p5Mock, 'fill');
     const map = new GameMap();
 

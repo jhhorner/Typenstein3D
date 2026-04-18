@@ -2,6 +2,8 @@ import type p5 from 'p5';
 import { GameManager } from './game_manager.js';
 import { debugOptions } from './debug_options.js';
 import { MAP_SCALE, WINDOW_WIDTH, WINDOW_HEIGHT } from './constants.js';
+import { DefaultImageLoader } from './image_loader.js';
+import { ConsoleLogger, LogContext } from './console_logger.js';
 
 /**
  * Entry point. Uses p5 in "instance mode" and wires it to the game loop:
@@ -27,6 +29,10 @@ new p5((p: p5) => {
   function drawScene(): void {
     manager.sceneObjects.forEach((o) => o.render(p));
   }
+
+  p.preload = () => {
+    DefaultImageLoader.instance.preload(p);
+  };
 
   p.setup = () => {
     p.createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);

@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 describe('Ray direction flags', () => {
-  it('π/4 (down-right): isFacingDown and isFacingRight', () => {
+  it('should set isFacingDown and isFacingRight for π/4 (down-right)', () => {
     const ray = new Ray(Math.PI / 4);
 
     expect(ray.isFacingDown).toBe(true);
@@ -19,21 +19,21 @@ describe('Ray direction flags', () => {
     expect(ray.isFacingLeft).toBe(false);
   });
 
-  it('3π/4 (down-left): isFacingDown and isFacingLeft', () => {
+  it('should set isFacingDown and isFacingLeft for 3π/4 (down-left)', () => {
     const ray = new Ray((3 * Math.PI) / 4);
 
     expect(ray.isFacingDown).toBe(true);
     expect(ray.isFacingLeft).toBe(true);
   });
 
-  it('5π/4 (up-left): isFacingUp and isFacingLeft', () => {
+  it('should set isFacingUp and isFacingLeft for 5π/4 (up-left)', () => {
     const ray = new Ray((5 * Math.PI) / 4);
 
     expect(ray.isFacingUp).toBe(true);
     expect(ray.isFacingLeft).toBe(true);
   });
 
-  it('7π/4 (up-right): isFacingUp and isFacingRight', () => {
+  it('should set isFacingUp and isFacingRight for 7π/4 (up-right)', () => {
     const ray = new Ray((7 * Math.PI) / 4);
 
     expect(ray.isFacingUp).toBe(true);
@@ -42,7 +42,7 @@ describe('Ray direction flags', () => {
 });
 
 describe('Ray.reset', () => {
-  it('updates direction flags after reset', () => {
+  it('should update direction flags after reset', () => {
     const ray = new Ray(Math.PI / 4); // down-right
 
     ray.angle = (5 * Math.PI) / 4; // now up-left
@@ -51,7 +51,7 @@ describe('Ray.reset', () => {
     expect(ray.isFacingLeft).toBe(true);
   });
 
-  it('normalizes negative angles to [0, 2π)', () => {
+  it('should normalize negative angles to [0, 2π)', () => {
     const ray = new Ray(0);
 
     ray.angle = -Math.PI / 2; // equivalent to 3π/2 → up, horizontal boundary is Left
@@ -60,7 +60,7 @@ describe('Ray.reset', () => {
     expect(ray.isFacingLeft).toBe(true);
   });
 
-  it('normalizes angles beyond 2π', () => {
+  it('should normalize angles beyond 2π', () => {
     const ray = new Ray(0);
 
     ray.angle = 3 * Math.PI; // equivalent to π → up (π is not strictly < π), Left
@@ -72,7 +72,7 @@ describe('Ray.reset', () => {
 
 describe('Ray.cast (step sign correction branches)', () => {
   // angle 3π/4 (down-left): tan is negative → triggers isFacingDown && yStep < 0 on line 188
-  it('casts correctly at 3π/4 (down-left)', () => {
+  it('should cast correctly at 3π/4 (down-left)', () => {
     const ray = new Ray((3 * Math.PI) / 4);
 
     ray.cast();
@@ -82,7 +82,7 @@ describe('Ray.cast (step sign correction branches)', () => {
   });
 
   // angle 7π/4 (up-right): tan is negative → triggers isFacingRight && xStep < 0 on line 155
-  it('casts correctly at 7π/4 (up-right)', () => {
+  it('should cast correctly at 7π/4 (up-right)', () => {
     const ray = new Ray((7 * Math.PI) / 4);
 
     ray.cast();
@@ -93,7 +93,7 @@ describe('Ray.cast (step sign correction branches)', () => {
 });
 
 describe('Ray.cast', () => {
-  it('sets collisionPoint to a non-origin wall for a ray cast into the map', () => {
+  it('should set collisionPoint to a non-origin wall for a ray cast into the map', () => {
     // Player starts at MAP center; cast a ray facing right (angle = 0)
     // It should hit the right wall of the map
     const player = GameManager.instance.player;
@@ -107,7 +107,7 @@ describe('Ray.cast', () => {
     expect(ray.collisionPoint.x % MAP_TILE_SIZE).toBeCloseTo(0, 0);
   });
 
-  it('sets collisionPoint to a non-origin wall when facing up', () => {
+  it('should set collisionPoint to a non-origin wall when facing up', () => {
     const ray = new Ray(2 * Math.PI); // facing up
 
     ray.cast();
@@ -116,7 +116,7 @@ describe('Ray.cast', () => {
     expect(ray.distance).toBeGreaterThan(0);
   });
 
-  it('collisionPoint is mutated in-place (same object reference)', () => {
+  it('should mutate collisionPoint in-place (same object reference)', () => {
     const ray = new Ray(0);
     const originalRef = ray.collisionPoint;
 
@@ -127,7 +127,7 @@ describe('Ray.cast', () => {
 });
 
 describe('Ray.render', () => {
-  it('renders without throwing', () => {
+  it('should render without throwing', () => {
     const ray = new Ray(0);
 
     ray.cast();
@@ -135,7 +135,7 @@ describe('Ray.render', () => {
     expect(() => ray.render(p5Mock)).not.toThrow();
   });
 
-  it('uses theme.map.rays color (with alpha) for stroke', () => {
+  it('should use theme.map.rays color (with alpha) for stroke', () => {
     const strokeSpy = vi.spyOn(p5Mock, 'stroke');
     const ray = new Ray(0);
 

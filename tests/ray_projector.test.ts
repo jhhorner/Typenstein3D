@@ -13,12 +13,12 @@ beforeEach(() => {
 });
 
 describe('RayProjector.render', () => {
-  it('does not throw', () => {
+  it('should not throw', () => {
     const projector = new RayProjector();
     expect(() => projector.render(p5Mock)).not.toThrow();
   });
 
-  it('calls rect once per ray', () => {
+  it('should call rect once per ray', () => {
     const projector = new RayProjector();
     const rectSpy = vi.spyOn(p5Mock, 'rect');
 
@@ -28,7 +28,7 @@ describe('RayProjector.render', () => {
     rectSpy.mockRestore();
   });
 
-  it('calls noStroke once per ray', () => {
+  it('should call noStroke once per ray', () => {
     const projector = new RayProjector();
     const noStrokeSpy = vi.spyOn(p5Mock, 'noStroke');
 
@@ -39,7 +39,7 @@ describe('RayProjector.render', () => {
   });
 
   describe('baseColor', () => {
-    it('is 255 for a vertical intercept hit', () => {
+    it('should be 255 for a vertical intercept hit', () => {
       const rays = GameManager.instance.rayCaster.rays;
       rays.forEach((r) => (r.interceptHit = CollisionIntercept.Vertical));
 
@@ -57,7 +57,7 @@ describe('RayProjector.render', () => {
       fillSpy.mockRestore();
     });
 
-    it('is 180 for a horizontal intercept hit', () => {
+    it('should be 180 for a horizontal intercept hit', () => {
       const rays = GameManager.instance.rayCaster.rays;
       rays.forEach((r) => (r.interceptHit = CollisionIntercept.Horizontal));
 
@@ -81,7 +81,7 @@ describe('RayProjector.render', () => {
       theme.gradientShading = false;
     });
 
-    it('calls fill with four arguments including alpha 255', () => {
+    it('should call fill with four arguments including alpha 255', () => {
       theme.gradientShading = false;
       const projector = new RayProjector();
       const fillSpy = vi.spyOn(p5Mock, 'fill');
@@ -104,7 +104,7 @@ describe('RayProjector.render', () => {
       theme.gradientShading = false;
     });
 
-    it('calls fill with four arguments including alpha 255', () => {
+    it('should call fill with four arguments including alpha 255', () => {
       theme.gradientShading = true;
       const projector = new RayProjector();
       const fillSpy = vi.spyOn(p5Mock, 'fill');
@@ -121,7 +121,7 @@ describe('RayProjector.render', () => {
       fillSpy.mockRestore();
     });
 
-    it('passes equal R, G, B values (gray brightness)', () => {
+    it('should pass equal R, G, B values (gray brightness)', () => {
       theme.gradientShading = true;
       const projector = new RayProjector();
       const fillSpy = vi.spyOn(p5Mock, 'fill');
@@ -135,7 +135,7 @@ describe('RayProjector.render', () => {
       fillSpy.mockRestore();
     });
 
-    it('brightness is greater than zero', () => {
+    it('should have brightness greater than zero', () => {
       theme.gradientShading = true;
       const projector = new RayProjector();
       const fillSpy = vi.spyOn(p5Mock, 'fill');
@@ -149,7 +149,7 @@ describe('RayProjector.render', () => {
       fillSpy.mockRestore();
     });
 
-    it('brightness is at most the flat baseColor', () => {
+    it('should have brightness at most the flat baseColor', () => {
       theme.gradientShading = true;
       const rays = GameManager.instance.rayCaster.rays;
       rays.forEach((r) => (r.interceptHit = CollisionIntercept.Vertical));
