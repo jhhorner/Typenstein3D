@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { ConsoleLogger } from '../src/console_logger.js';
-import { LogContext } from '../src/logger.js';
+import { LogContext, Logger } from '../src/logger.js';
 
 beforeEach(() => {
   ConsoleLogger._resetInstance();
@@ -19,10 +19,10 @@ describe('ConsoleLogger.instance', () => {
 });
 
 describe('ConsoleLogger log methods', () => {
-  let logger: ConsoleLogger;
+  let logger: Logger;
 
   beforeEach(() => {
-    logger = new ConsoleLogger();
+    logger = ConsoleLogger.instance;
   });
 
   it('should call console.debug with level and message', () => {
