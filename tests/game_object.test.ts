@@ -1,7 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import type p5 from 'p5';
 import { DefaultGameObject } from '../src/game_object.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
+
+let p5Mock: p5;
+
+beforeEach(() => {
+  p5Mock = makeP5Mock();
+});
 
 class ConcreteGameObject extends DefaultGameObject {
   renderCalled = false;

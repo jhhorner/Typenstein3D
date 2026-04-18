@@ -120,8 +120,8 @@ export class Ray {
 
     this.interceptHit = useHorizontal ? CollisionIntercept.Horizontal : CollisionIntercept.Vertical;
     this.distance = useHorizontal ? yCollisionDistance : xCollisionDistance;
-    this.collisionPoint.x = useHorizontal ? yIntercept?.x : xIntercept?.x;
-    this.collisionPoint.y = useHorizontal ? yIntercept?.y : xIntercept?.y;
+    this.collisionPoint.x = useHorizontal ? yIntercept.x : xIntercept.x;
+    this.collisionPoint.y = useHorizontal ? yIntercept.y : xIntercept.y;
   }
 
   /**

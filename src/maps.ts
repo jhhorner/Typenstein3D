@@ -1,7 +1,7 @@
 export enum MapName {
   Symmetry = 'symmetry',
   Pillars = 'pillars',
-  Labyrinth = 'Labyrinth',
+  Labyrinth = 'labyrinth',
   Spiral = 'spiral',
 }
 
@@ -28,7 +28,7 @@ export const furnishedMaps: Record<MapName, number[][]> = {
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1],
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 0, 0, 2, 0, 3, 0, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 0, 6, 0, 3, 0, 0, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   ],

@@ -13,7 +13,7 @@ function assetPath(name: ImageName): string {
 }
 
 beforeEach(() => {
-  (DefaultImageLoader as any)._instance = undefined;
+  DefaultImageLoader._resetInstance();
 });
 
 describe('DefaultImageLoader.instance', () => {

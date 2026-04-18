@@ -7,6 +7,10 @@ export class ConsoleLogger extends Singleton implements Logger {
     return super.instance as Logger;
   }
 
+  private constructor() {
+    super();
+  }
+
   private static readonly _dateFormat = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: '2-digit',

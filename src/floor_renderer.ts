@@ -14,6 +14,6 @@ export class FloorRenderer extends DefaultGameObject {
   render(p: p5): void {
     p.fill(theme.floor);
     p.noStroke();
-    p.rect(9, WINDOW_HEIGHT / 1.5, WINDOW_WIDTH, WINDOW_HEIGHT / 1.5);
+    p.rect(0, WINDOW_HEIGHT / 1.5, WINDOW_WIDTH, WINDOW_HEIGHT / 1.5);
   }
 }

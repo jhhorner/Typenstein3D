@@ -1,11 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { GameManager } from '../src/game_manager.js';
 import { RayCaster, RAY_COUNT } from '../src/ray_caster.js';
 import { debugOptions } from '../src/debug_options.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
+
+let p5Mock: p5;
 
 beforeEach(() => {
-  (GameManager as any)._instance = new GameManager();
+  p5Mock = makeP5Mock();
+  GameManager._resetInstance();
 });
 
 describe('RayCaster', () => {

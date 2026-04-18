@@ -1,12 +1,16 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { GameManager } from '../src/game_manager.js';
 import { Ray, CollisionIntercept } from '../src/ray.js';
 import { MAP_TILE_SIZE } from '../src/constants.js';
 import { theme } from '../src/theme.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
+
+let p5Mock: p5;
 
 beforeEach(() => {
-  (GameManager as any)._instance = new GameManager();
+  p5Mock = makeP5Mock();
+  GameManager._resetInstance();
 });
 
 describe('Ray direction flags', () => {
@@ -41,7 +45,7 @@ describe('Ray direction flags', () => {
   });
 });
 
-describe('Ray.reset', () => {
+describe('Ray.angle', () => {
   it('should update direction flags after reset', () => {
     const ray = new Ray(Math.PI / 4); // down-right
 

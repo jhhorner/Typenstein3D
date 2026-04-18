@@ -1,10 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { GameManager } from '../src/game_manager.js';
 import { Player } from '../src/player.js';
 import { debugOptions } from '../src/debug_options.js';
 import { theme } from '../src/theme.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../src/constants.js';
+
+let p5Mock: p5;
 
 // Minimal p5 keyCode stub used for key event tests
 function keyStub(keyCode: number) {
@@ -18,7 +21,8 @@ function keyStub(keyCode: number) {
 }
 
 beforeEach(() => {
-  (GameManager as any)._instance = new GameManager();
+  p5Mock = makeP5Mock();
+  GameManager._resetInstance();
 });
 
 describe('Player initial state', () => {

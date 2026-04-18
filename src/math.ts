@@ -18,7 +18,7 @@ export function degreesToRadians(degrees: number): number {
  * @param radians - Angle in radians.
  * @returns Equivalent angle in degrees.
  */
-export function radiansToDegrees(radians: number) {
+export function radiansToDegrees(radians: number): number {
   return radians * (180 / Math.PI);
 }
 
@@ -28,6 +28,6 @@ export function radiansToDegrees(radians: number) {
  * @param vectorB - Ending point.
  * @returns Straight-line distance between `vectorA` and `vectorB`.
  */
-export function distance(vectorA: Vector, vectorB: Vector) {
+export function distance(vectorA: Vector, vectorB: Vector): number {
   return Math.sqrt((vectorB.x - vectorA.x) ** 2 + (vectorB.y - vectorA.y) ** 2);
 }

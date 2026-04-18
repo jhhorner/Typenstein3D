@@ -1,8 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { SkyRenderer } from '../src/sky_renderer.js';
 import { theme } from '../src/theme.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../src/constants.js';
+
+let p5Mock: p5;
+
+beforeEach(() => {
+  p5Mock = makeP5Mock();
+});
 
 describe('SkyRenderer.render', () => {
   it('should not throw', () => {

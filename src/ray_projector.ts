@@ -3,7 +3,6 @@ import { DefaultGameObject } from './game_object.js';
 import { GameManager } from './game_manager.js';
 import { RAY_COUNT, WALL_PROJECTION_WIDTH } from './ray_caster.js';
 import { CollisionIntercept } from './ray.js';
-import { theme } from './theme.js';
 import { FOV_ANGLE, MAP_TILE_SIZE, WINDOW_WIDTH } from './constants.js';
 import { DefaultImageLoader } from './image_loader.js';
 import { ImageName } from './image_name.js';
@@ -37,7 +36,6 @@ export class RayProjector extends DefaultGameObject {
       const ray = GameManager.instance.rayCaster.rays[i];
       const correctedDistance = ray.distance * Math.cos(ray.angle - playerRotationAngle);
       const projectedWallHeight = (MAP_TILE_SIZE / correctedDistance) * distanceProjectionPlane;
-      const baseColor = ray.interceptHit === CollisionIntercept.Vertical ? 255 : 180;
       const tileX = ray.interceptHit === CollisionIntercept.Vertical && ray.isFacingLeft ? -1 : 0;
       const tileY = ray.interceptHit === CollisionIntercept.Horizontal && ray.isFacingUp ? -1 : 0;
       const tileValue = GameManager.instance.map.getAttributeAt({
@@ -47,45 +45,28 @@ export class RayProjector extends DefaultGameObject {
 
       p.noStroke();
 
-      const wallTextureName = wallResourceMap[tileValue];
-      if (wallTextureName) {
-        const wallTexture = DefaultImageLoader.instance.get(wallTextureName);
+      const wallTextureName = wallResourceMap[tileValue] || ImageName.Fail;
+      const wallTexture = DefaultImageLoader.instance.get(wallTextureName);
 
-        let offset: number;
-        if (ray.collidesWithY) {
-          offset = ray.collisionPoint.y % MAP_TILE_SIZE;
-        } else {
-          offset = ray.collisionPoint.x % MAP_TILE_SIZE;
-        }
-        const xTexelPosition = Math.floor((offset / MAP_TILE_SIZE) * wallTexture!.width);
-
-        p.image(
-          wallTexture!,
-          i * WALL_PROJECTION_WIDTH,
-          HALF_WINDOW_WIDTH - projectedWallHeight / 2,
-          WALL_PROJECTION_WIDTH,
-          projectedWallHeight,
-          xTexelPosition,
-          0,
-          1,
-          MAP_TILE_SIZE,
-        );
+      let offset: number;
+      if (ray.collidesWithY) {
+        offset = ray.collisionPoint.y % MAP_TILE_SIZE;
       } else {
-        if (theme.gradientShading) {
-          const gradient = Math.exp(-correctedDistance * theme.gradientScale);
-          const brightness = baseColor * gradient;
-          p.fill(brightness, brightness, brightness, 255);
-        } else {
-          p.fill(baseColor, baseColor, baseColor, 255);
-        }
-
-        p.rect(
-          i * WALL_PROJECTION_WIDTH,
-          HALF_WINDOW_WIDTH - projectedWallHeight / 2,
-          WALL_PROJECTION_WIDTH,
-          projectedWallHeight,
-        );
+        offset = ray.collisionPoint.x % MAP_TILE_SIZE;
       }
+      const xTexelPosition = Math.floor((offset / MAP_TILE_SIZE) * wallTexture!.width);
+
+      p.image(
+        wallTexture!,
+        i * WALL_PROJECTION_WIDTH,
+        HALF_WINDOW_WIDTH - projectedWallHeight / 2,
+        WALL_PROJECTION_WIDTH,
+        projectedWallHeight,
+        xTexelPosition,
+        0,
+        1,
+        MAP_TILE_SIZE,
+      );
     }
   }
 }

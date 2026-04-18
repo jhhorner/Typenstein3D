@@ -1,14 +1,19 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { p5Mock } from './helpers/p5Mock.js';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type p5 from 'p5';
+import { makeP5Mock } from './helpers/p5Mock.js';
 import { GameManager } from '../src/game_manager.js';
-import { RayCaster, RAY_COUNT } from '../src/ray_caster.js';
+import { RayCaster, RAY_COUNT, WALL_PROJECTION_WIDTH } from '../src/ray_caster.js';
 import { RayProjector } from '../src/ray_projector.js';
 import { CollisionIntercept } from '../src/ray.js';
-import { theme } from '../src/theme.js';
 import { DefaultImageLoader } from '../src/image_loader.js';
+import { MAP_TILE_SIZE } from '../src/constants.js';
+import { ImageName } from '../src/image_name.js';
+
+let p5Mock: p5;
 
 beforeEach(() => {
-  (GameManager as any)._instance = new GameManager();
+  p5Mock = makeP5Mock();
+  GameManager._resetInstance();
   GameManager.instance.rayCaster = new RayCaster();
   GameManager.instance.rayCaster.update();
   (DefaultImageLoader as any)._instance = { get: vi.fn(() => ({ width: 64 })) };
@@ -42,176 +47,113 @@ describe('RayProjector.render', () => {
     noStrokeSpy.mockRestore();
   });
 
-  describe('baseColor', () => {
-    beforeEach(() => {
-      vi.spyOn(GameManager.instance.map, 'getAttributeAt').mockReturnValue(8);
-    });
-
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
-    it('should be 255 for a vertical intercept hit', () => {
-      const rays = GameManager.instance.rayCaster.rays;
-      rays.forEach((r) => (r.interceptHit = CollisionIntercept.Vertical));
-
-      const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
-      theme.gradientShading = false;
-      projector.render(p5Mock);
-      theme.gradientShading = false;
-
-      fillSpy.mock.calls.forEach((args) => {
-        expect(args[0]).toBe(255);
+  describe('texel offset', () => {
+    it('should derive xTexelPosition from collisionPoint.y for a vertical intercept', () => {
+      const knownY = 32;
+      GameManager.instance.rayCaster.rays.forEach((r) => {
+        r.interceptHit = CollisionIntercept.Vertical;
+        r.collisionPoint.y = knownY;
       });
 
-      fillSpy.mockRestore();
-    });
-
-    it('should be 180 for a horizontal intercept hit', () => {
-      const rays = GameManager.instance.rayCaster.rays;
-      rays.forEach((r) => (r.interceptHit = CollisionIntercept.Horizontal));
-
       const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
+      const imageSpy = vi.spyOn(p5Mock, 'image');
 
-      theme.gradientShading = false;
       projector.render(p5Mock);
-      theme.gradientShading = false;
 
-      fillSpy.mock.calls.forEach((args) => {
-        expect(args[0]).toBe(180);
+      // xTexelPosition = Math.floor((32 % 64) / 64 * 64) = 32
+      const expectedTexelX = Math.floor((knownY % MAP_TILE_SIZE) / MAP_TILE_SIZE * 64);
+      imageSpy.mock.calls.forEach((args) => {
+        expect(args[5]).toBe(expectedTexelX);
       });
 
-      fillSpy.mockRestore();
+      imageSpy.mockRestore();
+    });
+
+    it('should derive xTexelPosition from collisionPoint.x for a horizontal intercept', () => {
+      const knownX = 48;
+      GameManager.instance.rayCaster.rays.forEach((r) => {
+        r.interceptHit = CollisionIntercept.Horizontal;
+        r.collisionPoint.x = knownX;
+      });
+
+      const projector = new RayProjector();
+      const imageSpy = vi.spyOn(p5Mock, 'image');
+
+      projector.render(p5Mock);
+
+      // xTexelPosition = Math.floor((48 % 64) / 64 * 64) = 48
+      const expectedTexelX = Math.floor((knownX % MAP_TILE_SIZE) / MAP_TILE_SIZE * 64);
+      imageSpy.mock.calls.forEach((args) => {
+        expect(args[5]).toBe(expectedTexelX);
+      });
+
+      imageSpy.mockRestore();
     });
   });
 
-  describe('when gradient shading is disabled', () => {
-    beforeEach(() => {
-      vi.spyOn(GameManager.instance.map, 'getAttributeAt').mockReturnValue(8);
-    });
+  describe('tile lookup offsets', () => {
+    it('should apply tileX of -1 when a vertical intercept is facing left', () => {
+      const knownX = 128;
+      GameManager.instance.rayCaster.rays.forEach((r) => {
+        r.interceptHit = CollisionIntercept.Vertical;
+        r.isFacingLeft = true;
+        r.collisionPoint.x = knownX;
+        r.collisionPoint.y = 128;
+      });
+      const getAttributeSpy = vi.spyOn(GameManager.instance.map, 'getAttributeAt');
 
-    afterEach(() => {
-      theme.gradientShading = false;
-      vi.restoreAllMocks();
-    });
-
-    it('should call fill with four arguments including alpha 255', () => {
-      theme.gradientShading = false;
       const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
       projector.render(p5Mock);
 
-      expect(fillSpy).toHaveBeenCalled();
-      fillSpy.mock.calls.forEach((args) => {
-        const a = args as unknown as number[];
-        expect(a).toHaveLength(4);
-        expect(a[3]).toBe(255);
+      getAttributeSpy.mock.calls.forEach((args) => {
+        expect(args[0].x).toBe(knownX - 1);
       });
-
-      fillSpy.mockRestore();
-    });
-  });
-
-  describe('tileY offset', () => {
-    beforeEach(() => {
-      vi.spyOn(GameManager.instance.map, 'getAttributeAt').mockReturnValue(8);
+      getAttributeSpy.mockRestore();
     });
 
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
-    it('should apply tileY of -1 for a horizontal intercept facing up', () => {
-      const rays = GameManager.instance.rayCaster.rays;
-      rays.forEach((r) => {
+    it('should apply tileY of -1 when a horizontal intercept is facing up', () => {
+      const knownY = 128;
+      GameManager.instance.rayCaster.rays.forEach((r) => {
         r.interceptHit = CollisionIntercept.Horizontal;
         r.isFacingUp = true;
+        r.collisionPoint.x = 128;
+        r.collisionPoint.y = knownY;
       });
+      const getAttributeSpy = vi.spyOn(GameManager.instance.map, 'getAttributeAt');
 
       const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
       projector.render(p5Mock);
 
-      expect(fillSpy).toHaveBeenCalled();
-      fillSpy.mockRestore();
+      getAttributeSpy.mock.calls.forEach((args) => {
+        expect(args[0].y).toBe(knownY - 1);
+      });
+      getAttributeSpy.mockRestore();
+    });
+
+    it('should fall back to ImageName.Fail when the tile value has no mapped texture', () => {
+      vi.spyOn(GameManager.instance.map, 'getAttributeAt').mockReturnValue(0);
+      const getMock = (DefaultImageLoader as any)._instance.get as ReturnType<typeof vi.fn>;
+
+      const projector = new RayProjector();
+      projector.render(p5Mock);
+
+      expect(getMock).toHaveBeenCalledWith(ImageName.Fail);
+      vi.restoreAllMocks();
     });
   });
 
-  describe('when gradient shading is enabled', () => {
-    beforeEach(() => {
-      vi.spyOn(GameManager.instance.map, 'getAttributeAt').mockReturnValue(8);
-    });
-
-    afterEach(() => {
-      theme.gradientShading = false;
-      vi.restoreAllMocks();
-    });
-
-    it('should call fill with four arguments including alpha 255', () => {
-      theme.gradientShading = true;
+  describe('screen column positions', () => {
+    it('should draw each ray at the correct screen x position', () => {
       const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
+      const imageSpy = vi.spyOn(p5Mock, 'image');
 
       projector.render(p5Mock);
 
-      expect(fillSpy).toHaveBeenCalled();
-      fillSpy.mock.calls.forEach((args) => {
-        const a = args as unknown as number[];
-        expect(a).toHaveLength(4);
-        expect(a[3]).toBe(255);
+      imageSpy.mock.calls.forEach((args, i) => {
+        expect(args[1]).toBe(i * WALL_PROJECTION_WIDTH);
       });
 
-      fillSpy.mockRestore();
-    });
-
-    it('should pass equal R, G, B values (gray brightness)', () => {
-      theme.gradientShading = true;
-      const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
-      projector.render(p5Mock);
-
-      const [r, g, b] = fillSpy.mock.calls[0] as unknown as [number, number, number];
-      expect(r).toBe(g);
-      expect(g).toBe(b);
-
-      fillSpy.mockRestore();
-    });
-
-    it('should have brightness greater than zero', () => {
-      theme.gradientShading = true;
-      const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
-      projector.render(p5Mock);
-
-      fillSpy.mock.calls.forEach((args) => {
-        expect(args[0]).toBeGreaterThan(0);
-      });
-
-      fillSpy.mockRestore();
-    });
-
-    it('should have brightness at most the flat baseColor', () => {
-      theme.gradientShading = true;
-      const rays = GameManager.instance.rayCaster.rays;
-      rays.forEach((r) => (r.interceptHit = CollisionIntercept.Vertical));
-
-      const projector = new RayProjector();
-      const fillSpy = vi.spyOn(p5Mock, 'fill');
-
-      projector.render(p5Mock);
-
-      fillSpy.mock.calls.forEach((args) => {
-        expect(args[0]).toBeLessThanOrEqual(255);
-      });
-
-      fillSpy.mockRestore();
+      imageSpy.mockRestore();
     });
   });
 });

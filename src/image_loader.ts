@@ -17,14 +17,8 @@ export class DefaultImageLoader extends Singleton implements ResourceLoader<p5.I
   cache: Partial<Record<ImageName, p5.Image | undefined>> = {};
 
   preload(p: p5): void {
-    this.load(p, ImageName.Fail);
-    this.load(p, ImageName.WallBrick);
-    this.load(p, ImageName.SlateStone);
-    this.load(p, ImageName.SlateStone2);
-    this.load(p, ImageName.SlateStone3);
-    this.load(p, ImageName.SlateStoneSign);
-    this.load(p, ImageName.BlueStone);
-    this.load(p, ImageName.Purple);
+    /** Preload all images for now. Later will need to be dynamic based on loaded map */
+    Object.values(ImageName).forEach((n) => this.load(p, n));
   }
 
   load(p: p5, name: ImageName): p5.Image {

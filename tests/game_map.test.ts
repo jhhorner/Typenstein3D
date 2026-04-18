@@ -1,11 +1,18 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { GameMap } from '../src/game_map.js';
 import { MAP_TILE_SIZE } from '../src/constants.js';
 import { TileAttribute } from '../src/game_map.js';
 import { theme } from '../src/theme.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../src/constants.js';
 import { wallResourceMap } from '../src/ray_projector.js';
+
+let p5Mock: p5;
+
+beforeEach(() => {
+  p5Mock = makeP5Mock();
+});
 
 describe('GameMap.isWithinBounds', () => {
   const map = new GameMap();
@@ -63,8 +70,6 @@ describe('GameMap grid invariants', () => {
     const grid = (map as any).grid as number[][];
     const expectedRows = WINDOW_HEIGHT / MAP_TILE_SIZE;
     const expectedCols = WINDOW_WIDTH / MAP_TILE_SIZE;
-
-    console.log(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     expect(grid).toHaveLength(expectedRows);
     grid.forEach((row) => expect(row).toHaveLength(expectedCols));

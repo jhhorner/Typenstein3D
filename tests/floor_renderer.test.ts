@@ -1,8 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type p5 from 'p5';
 import { FloorRenderer } from '../src/floor_renderer.js';
 import { theme } from '../src/theme.js';
-import { p5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock } from './helpers/p5Mock.js';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../src/constants.js';
+
+let p5Mock: p5;
+
+beforeEach(() => {
+  p5Mock = makeP5Mock();
+});
 
 describe('FloorRenderer.render', () => {
   it('should not throw', () => {
@@ -36,7 +43,7 @@ describe('FloorRenderer.render', () => {
 
     renderer.render(p5Mock);
 
-    expect(rectSpy).toHaveBeenCalledWith(9, WINDOW_HEIGHT / 1.5, WINDOW_WIDTH, WINDOW_HEIGHT / 1.5);
+    expect(rectSpy).toHaveBeenCalledWith(0, WINDOW_HEIGHT / 1.5, WINDOW_WIDTH, WINDOW_HEIGHT / 1.5);
     rectSpy.mockRestore();
   });
 

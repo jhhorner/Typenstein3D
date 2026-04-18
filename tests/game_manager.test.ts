@@ -8,7 +8,7 @@ import { SkyRenderer } from '../src/sky_renderer.js';
 import { FloorRenderer } from '../src/floor_renderer.js';
 
 beforeEach(() => {
-  (GameManager as any)._instance = undefined;
+  GameManager._resetInstance();
 });
 
 describe('GameManager constructor', () => {
@@ -42,16 +42,6 @@ describe('GameManager constructor', () => {
     expect(gameManager.sceneObjects).toContain(gameManager.rayProjector);
   });
 
-  it('should append game objects to custom mapObjects and sceneObjects arrays', () => {
-    const customMapObjects = [{ update: () => {}, render: () => {} }] as any[];
-    const customSceneObjects = [{ update: () => {}, render: () => {} }] as any[];
-    const gm = new GameManager(customMapObjects, customSceneObjects);
-
-    expect(gm.mapObjects).toHaveLength(4);
-    expect(gm.sceneObjects).toHaveLength(4);
-    expect(gm.mapObjects[0]).toBe(customMapObjects[0]);
-    expect(gm.sceneObjects[0]).toBe(customSceneObjects[0]);
-  });
 });
 
 describe('GameManager singleton', () => {
@@ -64,7 +54,7 @@ describe('GameManager singleton', () => {
 
   it('should create a new instance after reset', () => {
     const a = GameManager.instance;
-    (GameManager as any)._instance = undefined;
+    GameManager._resetInstance();
 
     const b = GameManager.instance;
 

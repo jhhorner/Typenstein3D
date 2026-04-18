@@ -9,7 +9,7 @@ export interface ResourceLoader<T, N = string> {
   /** Called during the p5 `preload` phase to queue assets before `setup` runs. */
   preload(p: p5): void;
   /** Returns the cached resource, loading upon first access. */
-  load(p: p5, name: N): T | null;
+  load(p: p5, name: N): T;
   /** Marks a cached entry as stale so the next `load` fetches it again. */
   unload(name: N): void;
   /** Returns the cached resource or null if it doesn't exist. */
