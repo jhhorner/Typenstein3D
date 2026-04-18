@@ -5,7 +5,8 @@ import { RayCaster } from './ray_caster.js';
 import { RayProjector } from './ray_projector.js';
 import { SkyRenderer } from './sky_renderer.js';
 import { FloorRenderer } from './floor_renderer.js';
-import { ConsoleLogger, Logger } from './console_logger.js';
+import { ConsoleLogger } from './console_logger.js';
+import { Logger } from './logger.js';
 import { Singleton } from './singleton.js';
 
 /**

@@ -1,7 +1,7 @@
 import type p5 from 'p5';
 import { ResourceLoader } from './resource_loader.js';
 import { GameManager } from './game_manager.js';
-import { LogContext } from './console_logger.js';
+import { LogContext } from './logger.js';
 import { Singleton } from './singleton.js';
 
 /**

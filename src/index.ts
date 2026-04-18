@@ -3,7 +3,8 @@ import { GameManager } from './game_manager.js';
 import { debugOptions } from './debug_options.js';
 import { MAP_SCALE, WINDOW_WIDTH, WINDOW_HEIGHT } from './constants.js';
 import { DefaultImageLoader } from './image_loader.js';
-import { ConsoleLogger, LogContext } from './console_logger.js';
+import { ConsoleLogger } from './console_logger.js';
+import { LogContext } from './logger.js';
 
 /**
  * Entry point. Uses p5 in "instance mode" and wires it to the game loop:
