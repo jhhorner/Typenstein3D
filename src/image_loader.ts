@@ -19,9 +19,9 @@ export const enum ImageName {
  * Singleton `ResourceLoader` for p5 images.
  * Images are cached on first load; failed loads fall back to `ImageName.Fail`.
  */
-export class DefaultImageLoader extends Singleton implements ResourceLoader<p5.Image> {
-  public static get instance(): ResourceLoader<p5.Image> {
-    return super.instance as ResourceLoader<p5.Image>;
+export class DefaultImageLoader extends Singleton implements ResourceLoader<p5.Image, ImageName> {
+  public static get instance(): ResourceLoader<p5.Image, ImageName> {
+    return super.instance as ResourceLoader<p5.Image, ImageName>;
   }
 
   cache: Partial<Record<ImageName, p5.Image | null>> = {};

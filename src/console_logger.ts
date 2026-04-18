@@ -1,8 +1,6 @@
 import { LogContext, Logger, LogLevel } from './logger.js';
 import { Singleton } from './singleton.js';
 
-export type LogParams = [message: string, context?: LogContext];
-
 /** Singleton logger that writes formatted entries to the browser console. */
 export class ConsoleLogger extends Singleton implements Logger {
   public static get instance(): Logger {

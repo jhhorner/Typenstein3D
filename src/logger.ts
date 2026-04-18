@@ -1,4 +1,4 @@
-import { LogParams } from './console_logger';
+export type LogParams = [message: string, context?: LogContext];
 
 /** Minimal logging interface consumed by game systems. */
 export interface Logger {
@@ -11,6 +11,7 @@ export interface Logger {
 /** Broad category attached to a log entry to indicate which subsystem to associate. */
 export const enum LogContext {
   None = 'None',
+  Bootstrap = 'Bootstrap',
   Resource = 'Resource',
   Renderer = 'Renderer',
 }
