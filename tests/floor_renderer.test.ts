@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type p5 from 'p5';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { FloorRenderer } from '../src/floor_renderer.js';
 import { theme } from '../src/theme.js';
 import { makeP5Mock } from './helpers/p5Mock.js';

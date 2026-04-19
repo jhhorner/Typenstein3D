@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import type p5 from 'p5';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { DefaultGameObject } from '../src/game_object.js';
-import { makeP5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock, mockDeltaTime } from './helpers/p5Mock.js';
 
 let p5Mock: p5;
 
@@ -20,7 +20,7 @@ describe('DefaultGameObject', () => {
   it('should be a no-op and not throw on update()', () => {
     const obj = new ConcreteGameObject();
 
-    expect(() => obj.update()).not.toThrow();
+    expect(() => obj.update(mockDeltaTime)).not.toThrow();
   });
 
   it('should delegate render() to the subclass implementation', () => {

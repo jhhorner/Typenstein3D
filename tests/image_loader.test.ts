@@ -30,7 +30,7 @@ describe('DefaultImageLoader.instance', () => {
 });
 
 describe('DefaultImageLoader.preload', () => {
-  it('should preload the default images', () => {
+  it('should preload default images', () => {
     const p = makeP5Mock();
     const loader = DefaultImageLoader.instance;
     const loadSpy = vi.spyOn(loader, 'load');
@@ -52,7 +52,7 @@ describe('DefaultImageLoader.load', () => {
     expect(p.loadImage).toHaveBeenCalledWith(assetPath(name as ImageName), expect.any(Function), expect.any(Function));
   });
 
-  it('should return the loaded image', () => {
+  it('should return loaded image', () => {
     const image = { width: 64, height: 64 } as p5.Image;
     const p = makeP5Mock(image);
     const loader = DefaultImageLoader.instance;
@@ -62,7 +62,7 @@ describe('DefaultImageLoader.load', () => {
     expect(result).toBe(image);
   });
 
-  it('should cache the image after the first load', () => {
+  it('should cache image after the first load', () => {
     const p = makeP5Mock();
     const loader = DefaultImageLoader.instance;
 
@@ -160,7 +160,7 @@ describe('DefaultImageLoader.clear', () => {
     expect((loader as DefaultImageLoader).cache).toEqual({});
   });
 
-  it('should trigger a fresh load after clear', () => {
+  it('should trigger a reload after clear', () => {
     const p = makeP5Mock();
     const loader = DefaultImageLoader.instance;
     loader.load(p, ImageName.WallBrick);

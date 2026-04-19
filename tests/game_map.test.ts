@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type p5 from 'p5';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GameMap } from '../src/game_map.js';
 import { MAP_TILE_SIZE } from '../src/constants.js';
 import { TileAttribute } from '../src/game_map.js';

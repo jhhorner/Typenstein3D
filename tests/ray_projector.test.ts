@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type p5 from 'p5';
-import { makeP5Mock } from './helpers/p5Mock.js';
+import { makeP5Mock, mockDeltaTime } from './helpers/p5Mock.js';
 import { GameManager } from '../src/game_manager.js';
 import { RayCaster, RAY_COUNT, WALL_PROJECTION_WIDTH } from '../src/ray_caster.js';
 import { RayProjector } from '../src/ray_projector.js';
@@ -15,7 +15,7 @@ beforeEach(() => {
   p5Mock = makeP5Mock();
   GameManager._resetInstance();
   GameManager.instance.rayCaster = new RayCaster();
-  GameManager.instance.rayCaster.update();
+  GameManager.instance.rayCaster.update(mockDeltaTime);
   (DefaultImageLoader as any)._instance = { get: vi.fn(() => ({ width: 64 })) };
 });
 
@@ -61,7 +61,7 @@ describe('RayProjector.render', () => {
       projector.render(p5Mock);
 
       // xTexelPosition = Math.floor((32 % 64) / 64 * 64) = 32
-      const expectedTexelX = Math.floor((knownY % MAP_TILE_SIZE) / MAP_TILE_SIZE * 64);
+      const expectedTexelX = Math.floor(((knownY % MAP_TILE_SIZE) / MAP_TILE_SIZE) * 64);
       imageSpy.mock.calls.forEach((args) => {
         expect(args[5]).toBe(expectedTexelX);
       });
@@ -82,7 +82,7 @@ describe('RayProjector.render', () => {
       projector.render(p5Mock);
 
       // xTexelPosition = Math.floor((48 % 64) / 64 * 64) = 48
-      const expectedTexelX = Math.floor((knownX % MAP_TILE_SIZE) / MAP_TILE_SIZE * 64);
+      const expectedTexelX = Math.floor(((knownX % MAP_TILE_SIZE) / MAP_TILE_SIZE) * 64);
       imageSpy.mock.calls.forEach((args) => {
         expect(args[5]).toBe(expectedTexelX);
       });

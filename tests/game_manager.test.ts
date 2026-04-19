@@ -18,13 +18,10 @@ describe('GameManager constructor', () => {
     gameManager = new GameManager();
   });
 
-  it('should create a map, player, and rayCaster', () => {
+  it('should create core game objects', () => {
     expect(gameManager.map).toBeInstanceOf(GameMap);
     expect(gameManager.player).toBeInstanceOf(Player);
     expect(gameManager.rayCaster).toBeInstanceOf(RayCaster);
-  });
-
-  it('should create a rayProjector, skyRenderer, and floorRenderer', () => {
     expect(gameManager.rayProjector).toBeInstanceOf(RayProjector);
     expect(gameManager.skyRenderer).toBeInstanceOf(SkyRenderer);
     expect(gameManager.floorRenderer).toBeInstanceOf(FloorRenderer);
@@ -41,7 +38,6 @@ describe('GameManager constructor', () => {
     expect(gameManager.sceneObjects).toContain(gameManager.floorRenderer);
     expect(gameManager.sceneObjects).toContain(gameManager.rayProjector);
   });
-
 });
 
 describe('GameManager singleton', () => {
