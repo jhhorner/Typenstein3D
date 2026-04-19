@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type p5 from 'p5';
-import { GameManager } from '../src/game_manager.js';
-import { Ray, CollisionIntercept } from '../src/rendering/ray.js';
-import { MAP_TILE_SIZE } from '../src/core/constants.js';
-import { theme } from '../src/config/theme.js';
-import { makeP5Mock } from './helpers/p5Mock.js';
+import { GameManager } from '../../src/game_manager.js';
+import { Ray, CollisionIntercept } from '../../src/rendering/ray.js';
+import { MAP_TILE_SIZE } from '../../src/core/constants.js';
+import { theme } from '../../src/config/theme.js';
+import { makeP5Mock } from '../helpers/p5Mock.js';
 
 let p5Mock: p5;
 
