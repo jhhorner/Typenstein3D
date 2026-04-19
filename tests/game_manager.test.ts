@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameManager } from '../src/game_manager.js';
-import { GameMap } from '../src/game_map.js';
-import { Player } from '../src/player.js';
-import { RayCaster } from '../src/ray_caster.js';
-import { RayProjector } from '../src/ray_projector.js';
-import { SkyRenderer } from '../src/sky_renderer.js';
-import { FloorRenderer } from '../src/floor_renderer.js';
+import { GameMap } from '../src/world/game_map.js';
+import { Player } from '../src/player/player.js';
+import { RayCaster } from '../src/rendering/ray_caster.js';
+import { RayProjector } from '../src/rendering/ray_projector.js';
+import { SkyRenderer } from '../src/rendering/sky_renderer.js';
+import { FloorRenderer } from '../src/rendering/floor_renderer.js';
 
 beforeEach(() => {
-  (GameManager as any)._instance = undefined;
+  GameManager._resetInstance();
 });
 
 describe('GameManager constructor', () => {
@@ -18,13 +18,10 @@ describe('GameManager constructor', () => {
     gameManager = new GameManager();
   });
 
-  it('should create a map, player, and rayCaster', () => {
+  it('should create core game objects', () => {
     expect(gameManager.map).toBeInstanceOf(GameMap);
     expect(gameManager.player).toBeInstanceOf(Player);
     expect(gameManager.rayCaster).toBeInstanceOf(RayCaster);
-  });
-
-  it('should create a rayProjector, skyRenderer, and floorRenderer', () => {
     expect(gameManager.rayProjector).toBeInstanceOf(RayProjector);
     expect(gameManager.skyRenderer).toBeInstanceOf(SkyRenderer);
     expect(gameManager.floorRenderer).toBeInstanceOf(FloorRenderer);
@@ -41,17 +38,6 @@ describe('GameManager constructor', () => {
     expect(gameManager.sceneObjects).toContain(gameManager.floorRenderer);
     expect(gameManager.sceneObjects).toContain(gameManager.rayProjector);
   });
-
-  it('should append game objects to custom mapObjects and sceneObjects arrays', () => {
-    const customMapObjects = [{ update: () => {}, render: () => {} }] as any[];
-    const customSceneObjects = [{ update: () => {}, render: () => {} }] as any[];
-    const gm = new GameManager(customMapObjects, customSceneObjects);
-
-    expect(gm.mapObjects).toHaveLength(4);
-    expect(gm.sceneObjects).toHaveLength(4);
-    expect(gm.mapObjects[0]).toBe(customMapObjects[0]);
-    expect(gm.sceneObjects[0]).toBe(customSceneObjects[0]);
-  });
 });
 
 describe('GameManager singleton', () => {
@@ -64,7 +50,7 @@ describe('GameManager singleton', () => {
 
   it('should create a new instance after reset', () => {
     const a = GameManager.instance;
-    (GameManager as any)._instance = undefined;
+    GameManager._resetInstance();
 
     const b = GameManager.instance;
 

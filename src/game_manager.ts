@@ -1,13 +1,13 @@
-import { GameMap } from './game_map.js';
-import { GameObject } from './game_object.js';
-import { Player } from './player.js';
-import { RayCaster } from './ray_caster.js';
-import { RayProjector } from './ray_projector.js';
-import { SkyRenderer } from './sky_renderer.js';
-import { FloorRenderer } from './floor_renderer.js';
-import { ConsoleLogger } from './console_logger.js';
-import { Logger } from './logger.js';
-import { Singleton } from './singleton.js';
+import { GameMap } from './world/game_map.js';
+import { GameObject } from './core/game_object.js';
+import { Player } from './player/player.js';
+import { RayCaster } from './rendering/ray_caster.js';
+import { RayProjector } from './rendering/ray_projector.js';
+import { SkyRenderer } from './rendering/sky_renderer.js';
+import { FloorRenderer } from './rendering/floor_renderer.js';
+import { ConsoleLogger } from './logging/console_logger.js';
+import { Logger } from './logging/logger.js';
+import { Singleton } from './core/singleton.js';
 
 /**
  * Singleton coordinator for all game objects.
@@ -41,15 +41,10 @@ export class GameManager extends Singleton {
   /** Responsible for logging messages throughout the game */
   logger: Logger;
 
-  /**
-   * @param mapObjects - Ordered list of objects rendered under the map scale transform
-   *   (2D map view). The constructor appends `map`, `rayCaster`, and `player` in that order.
-   * @param sceneObjects - Ordered list of objects rendered without scaling (e.g. 3D projection).
-   */
-  constructor(
-    public mapObjects: GameObject[] = [],
-    public sceneObjects: GameObject[] = [],
-  ) {
+  readonly mapObjects: GameObject[];
+  readonly sceneObjects: GameObject[];
+
+  constructor() {
     super();
     this.map = new GameMap();
     this.player = new Player();
@@ -57,9 +52,9 @@ export class GameManager extends Singleton {
     this.rayProjector = new RayProjector();
     this.skyRenderer = new SkyRenderer();
     this.floorRenderer = new FloorRenderer();
-    this.logger = new ConsoleLogger();
+    this.logger = ConsoleLogger.instance;
 
-    this.sceneObjects.push(this.skyRenderer, this.floorRenderer, this.rayProjector);
-    this.mapObjects.push(this.map, this.rayCaster, this.player);
+    this.mapObjects = [this.map, this.rayCaster, this.player];
+    this.sceneObjects = [this.skyRenderer, this.floorRenderer, this.rayProjector];
   }
 }
