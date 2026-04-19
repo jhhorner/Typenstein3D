@@ -106,15 +106,21 @@ window.debugOptions.render.mapScale = 2;
 ## Project Structure
 
 ```
-typedoom/
 ├── src/
-│   ├── index.ts            Entry point — initializes the p5 canvas and drives the game loop
-│   ├── *.ts                Game logic and engine files
-│   └── vendor/             Bundled third-party libraries (p5.js)
+│   ├── assets/             Static game assets (images, sprites)
+│   ├── config/             Debug options and theme configuration
+│   ├── core/               Foundational utilities, constants, and math helpers
+│   ├── logging/            Logging infrastructure
+│   ├── player/             Player state and movement logic
+│   ├── rendering/          Raycasting and 3D rendering pipeline
+│   ├── resources/          Resource loading (images, maps)
+│   ├── world/              Game world and map data
+│   ├── vendor/             Bundled third-party libraries (p5.js)
+│   └── game_manager.ts     Top-level game loop and state management
+│   └── index.ts            Entry point to bootstrap the game loop
 ├── tests/
-│   ├── helpers/
-│   │   └── p5Mock.ts       p5.js mock for unit tests
-│   └── *.test.ts           Vitest unit tests for each module
+│   ├── helpers/            Shared test utilities and mocks (p5.js mock)
+│   └── */                  Unit tests mirroring src/ structure
 ├── docs/                   Documentation built using TypeDoc
 ├── dist/                   Compiled JavaScript output (generated)
 ├── coverage/               Test coverage report (generated)
