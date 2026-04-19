@@ -40,8 +40,8 @@ export const theme: Theme = {
   },
   gradientShading: false,
   gradientScale: 0.001,
-  sky: '#333333',
-  floor: '#2b2b2b',
+  sky: '#404040',
+  floor: '#7B7B7B',
 };
 
 declare global {

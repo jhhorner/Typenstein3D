@@ -7,10 +7,9 @@
 export enum ImageName {
   Fail = 'goofed.png',
   WallBrick = 'wall_brick.png',
-  SlateStone = 'wall_slate.png',
-  SlateStone2 = 'wall_slate2.png',
-  SlateStone3 = 'wall_slate3.png',
-  SlateStoneSign = 'wall_slatesign.png',
-  BlueStone = 'wall_bluestone.png',
-  Purple = 'wall_purple.png',
+  WallSteel = 'wall_steel.png',
+  WallRock = 'wall_rock.png',
+  WallSkull = 'wall_skull.png',
+  WallBlue = 'wall_blue.png',
+  WallSlate = 'wall_slate.png',
 }
