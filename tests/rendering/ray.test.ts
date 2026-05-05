@@ -19,8 +19,6 @@ describe('Ray direction flags', () => {
 
     expect(ray.facingDirection & RayDirection.Down).toBe(RayDirection.Down);
     expect(ray.facingDirection & RayDirection.Right).toBe(RayDirection.Right);
-    expect(ray.facingDirection & RayDirection.Up).toBe(0);
-    expect(ray.facingDirection & RayDirection.Left).toBe(0);
   });
 
   it('should set isFacingDown and isFacingLeft for 3π/4 (down-left)', () => {

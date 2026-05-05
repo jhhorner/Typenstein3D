@@ -12,8 +12,7 @@
     "ts:format:write": "prettier . --write",
     "ts:compile": "tsc",
     "ts:watch": "tsc -watch",
-    "ts:lint": "eslint src tests",
-    "build:docs": "typedoc --entryPointStrategy Expand src"
+    "ts:lint": "eslint src tests"
   },
   "keywords": [],
   "author": "Justin Horner",
