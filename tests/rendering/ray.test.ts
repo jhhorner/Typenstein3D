@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 
 describe('Ray direction flags', () => {
-  it.only('should set isFacingDown and isFacingRight for π/4 (down-right)', () => {
+  it('should set isFacingDown and isFacingRight for π/4 (down-right)', () => {
     const ray = new Ray(Math.PI / 4);
 
     expect(ray.facingDirection & RayDirection.Down).toBe(RayDirection.Down);
