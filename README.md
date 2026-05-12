@@ -1,8 +1,6 @@
 # Typenstein3D
 
-> A browser-based typing game inspired by Wolfenstein 3D
-
-Typenstein3D is planned to become a browser-based raycast 3D first-person typing game built with TypeScript, inspired by the techniques used in **Wolfenstein 3D** (1992) by Id Software.
+> A browser-based raycast engine built with TypeScript, inspired by the techniques used in **Wolfenstein 3D** (1992) by Id Software.
 
 ![Demo GIF](./media/t3d_capture.gif)
 
